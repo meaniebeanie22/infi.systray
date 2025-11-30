@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# PEP 621 project metadata. Update `version` to match repository versioning strategy
+# or switch to a dynamic strategy (setuptools_scm or attr-based dynamic field).
+[project]
+name = "infi.systray"
+version = "0.0.0"
+description = "Windows system tray icon"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "BSD" }
+authors = [ { name = "Infinidat" } ]
+dependencies = ["setuptools"]
+
+[project.urls]
+Homepage = "https://github.com/Infinidat/infi.systray"
+
+# Use setuptools configuration to discover packages under `src/`
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# Package data and include-package-data behavior left to default; existing
+# `setup.in` and `buildout.cfg` are preserved for backwards compatibility.
+
+# Migration notes for maintainers:
+# - The project previously used buildout + `setup.in` to generate `setup.py`.
+# - `version` is set to a placeholder `0.0.0`. Replace with the current
+#   version string or adopt a dynamic method (for example using
+#   `setuptools_scm` or the `attr` dynamic metadata approach) before releasing.
+# - To build a wheel locally (PowerShell):
+#     python -m pip install --upgrade build
+#     python -m build
+# - To install locally for development:
+#     python -m pip install -e .
