@@ -10,8 +10,6 @@ To install infi.systray, run:
 pip install infi.systray
 ```
 
-Alternatively, you can use easy_install.
-
 ## Usage
 
 Creating an icon with one option in the context menu:
@@ -111,11 +109,4 @@ This module can only be used in Windows systems, otherwise the import statement 
 This module is adapted from an implementation by Simon Brunning, which in turn was adapted from Mark Hammond's
 win32gui_taskbar.py and win32gui_menu.py demos from PyWin32.
 
-# Checking out the code
 
-To run this code from the repository for development purposes, run the following:
-
-```
-easy_install -U infi.projector
-projector devenv build
-```
