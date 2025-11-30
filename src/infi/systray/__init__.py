@@ -1,2 +1,3 @@
-__import__("pkg_resources").declare_namespace(__name__)
 from .traybar import SysTrayIcon
+
+__all__ = ["SysTrayIcon"]

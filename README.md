@@ -1,13 +1,19 @@
 # `infi.systray` [![](https://img.shields.io/pypi/v/infi.systray)](https://pypi.org/project/infi.systray/)
 
-This module implements a Windows system tray icon with a right-click context menu.
+> ⚠️ **Windows only** — This module requires Windows. It implements a system tray icon with a right-click context menu using Win32 APIs.
 
 ## Installation
 
-To install infi.systray, run:
+To install infi.systray:
 
-```
+```bash
 pip install infi.systray
+```
+
+Or with `uv`:
+
+```bash
+uv pip install infi.systray
 ```
 
 ## Usage
@@ -17,7 +23,7 @@ Creating an icon with one option in the context menu:
 ```python
 from infi.systray import SysTrayIcon
 def say_hello(systray):
-    print "Hello, World!"
+    print("Hello, World!")
 menu_options = (("Say Hello", None, say_hello),)
 systray = SysTrayIcon("icon.ico", "Example tray icon", menu_options)
 systray.start()
@@ -80,11 +86,11 @@ value of an option, instead of passing a callback function. e.g.
 from infi.systray import SysTrayIcon
 hover_text = "SysTrayIcon Demo"
 def hello(sysTrayIcon):
-    print "Hello World."
+    print("Hello World.")
 def simon(sysTrayIcon):
-    print "Hello Simon."
+    print("Hello Simon.")
 def bye(sysTrayIcon):
-    print 'Bye, then.'
+    print('Bye, then.')
 def do_nothing(sysTrayIcon):
     pass
 menu_options = (('Say Hello', "hello.ico", hello),
@@ -102,7 +108,27 @@ exit and the icon thread will continue to exist until the Quit option is selecte
 interrupts, some code must be written that will call systray.shutdown when the program should quit.
 Using SysTrayIcon as a context manager automates the start and shutdown of the tray.
 
-This module can only be used in Windows systems, otherwise the import statement will fail.
+## Development
+
+Clone the repository and set up a development environment:
+
+```bash
+git clone https://github.com/meaniebeanie22/infi.systray.git
+cd infi.systray
+uv sync
+```
+
+Run tests (Windows desktop only; tests open GUI elements):
+
+```bash
+uv run python -m tests.test
+```
+
+Build a wheel:
+
+```bash
+uv run python -m build
+```
 
 ## Credit
 

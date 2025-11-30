@@ -1,8 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "infi.systray"
 version = "0.1.0"
-description = "Windows system tray icon"
+description = "Windows system tray icon with right-click context menu"
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "BSD" }
+authors = [{name = "Infinidat"}, {name = "Beanie"}]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/meaniebeanie22/infi.systray"
+Repository = "https://github.com/meaniebeanie22/infi.systray.git"
+Issues = "https://github.com/meaniebeanie22/infi.systray/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
