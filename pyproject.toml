@@ -10,6 +10,10 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "BSD" }
 authors = [{name = "Infinidat"}, {name = "Beanie"}]
+dependencies = [
+    "comtypes>=1.4.12",
+    "setuptools",
+]
 classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: BSD License",
@@ -29,4 +33,9 @@ Issues = "https://github.com/meaniebeanie22/infi.systray/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+# Optional runtime dependencies that enable Windows 11 shell menu support
+[project.optional-dependencies]
+# Enable with `pip install .[win11]` or let uv manage it
+win11 = ["comtypes>=1.1.10"]
 

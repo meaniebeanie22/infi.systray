@@ -130,6 +130,45 @@ Build a wheel:
 uv run python -m build
 ```
 
+Optional Windows 11 dark mode support
+
+```bash
+# No special installation needed - dark mode is built-in!
+# Just use infi.systray normally and your menus will respect Windows dark mode.
+```
+
+## Demos
+
+These demos live in the `demos/` directory. They are Windows-only.
+
+Prerequisites:
+- Windows desktop session
+
+Run the simple legacy demo:
+
+```powershell
+python demos\demo_simple.py
+```
+
+Run the dark mode demo (Windows 11):
+
+```powershell
+python demos\demo_shell_menu.py
+```
+
+This demo shows menus that automatically respect Windows dark mode.
+Your menus will render in dark mode when Windows is in dark mode,
+just like Windows Defender, Bluetooth settings, and Bitwarden.
+
+**Note:** Dark mode support is automatic when your window is created—no configuration needed!
+
+If you want to run the interactive shell-menu test, set the env var and run the test module:
+
+```powershell
+$env:RUN_WIN11_UI_TEST = '1'
+python -m tests.test_win11
+```
+
 ## Credit
 
 This module is adapted from an implementation by Simon Brunning, which in turn was adapted from Mark Hammond's

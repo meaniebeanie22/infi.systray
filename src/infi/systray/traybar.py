@@ -33,6 +33,7 @@ class SysTrayIcon:
         menu_options=None,
         on_quit=None,
         default_menu_index=None,
+        use_shell_menu=False,
         window_class_name=None,
     ):
 
@@ -51,6 +52,7 @@ class SysTrayIcon:
         window_class_name = window_class_name or f"SysTrayIconPy-{uuid.uuid4()}"
 
         self._default_menu_index = default_menu_index or 0
+        self._use_shell_menu = use_shell_menu
         self._window_class_name = encode_for_locale(window_class_name)
         self._message_dict = {
             RegisterWindowMessage("TaskbarCreated"): self._restart,
@@ -81,6 +83,7 @@ class SysTrayIcon:
         hwnd = HANDLE(hwnd)
         wparam = WPARAM(wparam)
         lparam = LPARAM(lparam)
+
         if msg in self._message_dict:
             self._message_dict[msg](hwnd, msg, wparam.value, lparam.value)
         return DefWindowProc(hwnd, msg, wparam, lparam)
@@ -113,11 +116,42 @@ class SysTrayIcon:
             None,
         )
         UpdateWindow(self._hwnd)
+
+        # Enable dark mode for this window so menus respect system theme
+        try:
+            from . import win11_adapter
+
+            win11_adapter.enable_dark_mode(self._hwnd)
+        except Exception:
+            pass
+
         self._refresh_icon()
 
     def _message_loop_func(self):
-        self._create_window()
-        PumpMessages()
+        # Initialize COM on this thread (STA) if available so shell COM
+        # interfaces (IContextMenu3) work properly. If comtypes is not
+        # installed, continue without COM initialization.
+        com_initialized = False
+        try:
+            import comtypes
+
+            try:
+                comtypes.CoInitialize()
+                com_initialized = True
+            except Exception:
+                com_initialized = False
+        except Exception:
+            com_initialized = False
+
+        try:
+            self._create_window()
+            PumpMessages()
+        finally:
+            if com_initialized:
+                try:
+                    comtypes.CoUninitialize()
+                except Exception:
+                    pass
 
     def start(self):
         if self._hwnd:
@@ -231,6 +265,22 @@ class SysTrayIcon:
         return True
 
     def _show_menu(self):
+        # Try Windows 11 / shell-driven menu if requested. If the feature
+        # is not yet implemented or an error occurs, fall back to the
+        # legacy CreatePopupMenu/TrackPopupMenu implementation.
+        if self._use_shell_menu:
+            try:
+                from .win11_adapter import show_shell_menu
+
+                show_shell_menu(self._hwnd, self._menu_options)
+                return
+            except NotImplementedError:
+                # Feature placeholder; fall back
+                pass
+            except Exception:
+                # comtypes missing or other runtime issue; fall back
+                pass
+
         if self._menu is None:
             self._menu = CreatePopupMenu()
             self._create_menu(self._menu, self._menu_options)
